@@ -26,6 +26,14 @@ def fitness(phenotype): #fitness function dari setiap individual
 	return fitness
 
 def sumFitness(fitness): #total fitness function seluruh individual
-	for x in fitness:
-		total = total + x
-	return total
+	return -(sum(fitness))
+
+
+pop = generatePopulation()
+print(pop)
+enc = encoding(pop)
+print(enc)
+fit = fitness(enc)
+print(fit)
+sumFit = sumFitness(fit)
+print("ini sumfit ",sumFit)
