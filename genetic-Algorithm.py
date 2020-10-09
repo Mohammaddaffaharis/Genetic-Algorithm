@@ -21,12 +21,20 @@ def encoding(population): #encoding Integer menggunakan 5 gen
 def fitness(phenotype): #fitness function dari setiap individual
 	fitness = []
 	for x in phenotype:
-		f = (math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1))
+		f =  1/(((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))+0,1)
+		#f = -((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))
 		fitness.append(f)
 	return fitness
 
 def sumFitness(fitness): #total fitness function seluruh individual
-	return -(sum(fitness))
+	return sum(fitness)
+
+def rouletteWheel(fitness):
+	total = sumFitness(fitness)
+	r = random.randint()
+	for x in fitness:
+		r = x/total
+
 
 
 pop = generatePopulation()
