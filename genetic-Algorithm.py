@@ -1,5 +1,7 @@
 import random
 import math
+pc = 0.69
+pm = 0.11
 def generatePopulation(): # menggunakan integer Encoding
 	population = []
 	x = 1
@@ -21,27 +23,51 @@ def encoding(population): #encoding Integer menggunakan 5 gen
 def fitness(phenotype): #fitness function dari setiap individual
 	fitness = []
 	for x in phenotype:
-		f =  1/(((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))+0,1)
-		#f = -((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))
+		#f =  1/(((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))+0.1)
+		f = -((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))
 		fitness.append(f)
 	return fitness
 
 def sumFitness(fitness): #total fitness function seluruh individual
 	return sum(fitness)
 
-def rouletteWheel(fitness):
-	total = sumFitness(fitness)
-	r = random.randint()
-	for x in fitness:
-		r = x/total
+def bestFitness(fitness): # mencari individu dengan nilai fitness terbaik di sebuah populasi
+	return fitness[fitness.index(max(fitness))]
+
+def rouletteWheel(fitness): # parent selection menggunakan Roulette Wheels
+	r = random.random()
+	ind = 0
+	while (r > 0):
+		r -= fitness[ind]/sumFitness(fitness)
+		ind += 1
+	return ind
+
+def crossover(papa, mama, pc): #melakukan crossover terhadap kedua parent yang didapatkan (jika masuk dalam probabilitas)
+	x = random.random()
+	if (x < pc):
+		stop = random.randint(0,9)
+		for i in range(stop):
+			papa[i] = mama[i]
+			mama[i] = papa[i]
+	return papa,mama
+
+def mutasi(papa, mama, pm): #melakukan mutasi terhadap kedua parent yang didapatkan (jika masuk dalam probabilitas)
+	x = random.random()
+	if (x<pm):
+		papa[random.randint(0,9)] = random.randint(0,9)
+		mama[random.randint(0,9)] = random.randint(0,9)
+	return papa,mama
+
 
 
 
 pop = generatePopulation()
-print(pop)
+print("Populasi",pop)
 enc = encoding(pop)
-print(enc)
+print("Phenotype",enc)
 fit = fitness(enc)
-print(fit)
+print("Fitnessnya",fit)
+bestFit = bestFitness(fit)
+print("Best Fitness ",bestFit)
 sumFit = sumFitness(fit)
 print("ini sumfit ",sumFit)
