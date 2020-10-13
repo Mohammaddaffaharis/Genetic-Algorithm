@@ -20,26 +20,29 @@ def encoding(population): #encoding Integer menggunakan 5 gen
 		phenotype.append([x1,x2])
 	return phenotype
 
-def fitness(phenotype): #fitness function dari setiap individual
+def fitness(phenotype): #fitness function dari setiap individual di dalam populasi
 	fitness = []
 	for x in phenotype:
-		#f =  1/(((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))+0.1)
-		f = -((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))
+		f =  1/(((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))+0.1)
 		fitness.append(f)
 	return fitness
 
 def sumFitness(fitness): #total fitness function seluruh individual
-	return sum(fitness)
+	total = 0
+	for i in fitness:
+		total = total + i
+	return total
 
-def bestFitness(fitness): # mencari individu dengan nilai fitness terbaik di sebuah populasi
-	return fitness[fitness.index(max(fitness))]
+def bestFitness(fitness): # mencari individu dengan nilai fitness terbaik di sebuah populasi (digunakan untuk elitism)
+	return fitness.index(max(fitness))
 
 def rouletteWheel(fitness): # parent selection menggunakan Roulette Wheels
 	r = random.random()
+	total = sumFitness(fitness)
 	ind = 0
-	while (r > 0):
-		r -= fitness[ind]/sumFitness(fitness)
-		ind += 1
+	while (r > 0) and (ind <= 18):
+		r = r - fitness[ind]/total
+		ind = ind + 1
 	return ind
 
 def crossover(papa, mama, pc): #melakukan crossover terhadap kedua parent yang didapatkan (jika masuk dalam probabilitas)
@@ -47,8 +50,8 @@ def crossover(papa, mama, pc): #melakukan crossover terhadap kedua parent yang d
 	if (x < pc):
 		stop = random.randint(0,9)
 		for i in range(stop):
-			papa[i] = mama[i]
-			mama[i] = papa[i]
+			papa[i],mama[i] = mama[i], papa[i]
+			#mama[i] = papa[i]
 	return papa,mama
 
 def mutasi(papa, mama, pm): #melakukan mutasi terhadap kedua parent yang didapatkan (jika masuk dalam probabilitas)
@@ -59,15 +62,41 @@ def mutasi(papa, mama, pm): #melakukan mutasi terhadap kedua parent yang didapat
 	return papa,mama
 
 
+#============ M A I N   P R O G R A M ============
 
+pop = generatePopulation() #generate populasi awal
+for i in range(100): #generate 100 generasi
+	enc = encoding(pop)
+	fit = fitness(enc)
+	newPop = []
+	bestFit = pop[bestFitness(fit)]
+	newPop.append(bestFit)
+	newPop.append(bestFit)
+	i = 0
+	while(i < 18):
+		q = rouletteWheel(fit)
+		r = rouletteWheel(fit)
+		papa = pop[q]
+		mama = pop[r]
+		bocil = crossover(papa,mama,pc)
+		bocil = mutasi(bocil[0],bocil[1],pm)
+		newPop.append(bocil[0])
+		newPop.append(bocil[1])
+		i += 2
+	pop = newPop
 
-pop = generatePopulation()
-print("Populasi",pop)
 enc = encoding(pop)
-print("Phenotype",enc)
 fit = fitness(enc)
-print("Fitnessnya",fit)
-bestFit = bestFitness(fit)
-print("Best Fitness ",bestFit)
-sumFit = sumFitness(fit)
-print("ini sumfit ",sumFit)
+hasil = pop[bestFitness(fit)]
+arrHasil = []
+arrHasil.append(hasil)
+
+print('========== Nilai Minimalisasi ==========\n')
+print('Kromosom terbaik :', hasil)
+print('Hasil decode     :', encoding(arrHasil))
+print('Fitness terbaik  :', fitness(arrHasil))
+
+
+
+
+
