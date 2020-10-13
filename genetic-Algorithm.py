@@ -96,7 +96,13 @@ print('Kromosom terbaik :', hasil)
 print('Hasil decode     :', encoding(arrHasil))
 print('Fitness terbaik  :', fitness(arrHasil))
 
+"""
+			 OUTPUT PROGRAM
+========== Nilai Minimalisasi ==========
 
+Kromosom terbaik : [7, 9, 9, 6, 3, 0, 7, 6, 4, 2]
+Hasil decode     : [[1.3989139891398916, -0.8471584715847158]]
+Fitness terbaik  : [3.0737906343743595]
 
-
+"""
 
