@@ -1,11 +1,13 @@
 import random
 import math
+
 pc = 0.69
-pm = 0.11
+pm = 0.011
+
 def generatePopulation(): # menggunakan integer Encoding
 	population = []
 	x = 1
-	for x in range(20): #populasi sebanyak 20 individual
+	for x in range(120): #populasi sebanyak 120 individual
 		individual = []
 		for y in range(10): # satu individual terdiri dari 10 gen
 			individual.append(random.randint(0,9))
@@ -40,7 +42,7 @@ def rouletteWheel(fitness): # parent selection menggunakan Roulette Wheels
 	r = random.random()
 	total = sumFitness(fitness)
 	ind = 0
-	while (r > 0) and (ind <= 18):
+	while (r > 0) and (ind <= 118):
 		r = r - fitness[ind]/total
 		ind = ind + 1
 	return ind
@@ -65,7 +67,7 @@ def mutasi(papa, mama, pm): #melakukan mutasi terhadap kedua parent yang didapat
 #============ M A I N   P R O G R A M ============
 
 pop = generatePopulation() #generate populasi awal
-for i in range(100): #generate 100 generasi
+for i in range(1000): #generate 1000 generasi
 	enc = encoding(pop)
 	fit = fitness(enc)
 	newPop = []
@@ -73,7 +75,7 @@ for i in range(100): #generate 100 generasi
 	newPop.append(bestFit)
 	newPop.append(bestFit)
 	i = 0
-	while(i < 18):
+	while(i < 118):
 		q = rouletteWheel(fit)
 		r = rouletteWheel(fit)
 		papa = pop[q]
@@ -100,9 +102,10 @@ print('Fitness terbaik  :', fitness(arrHasil))
 			 OUTPUT PROGRAM
 ========== Nilai Minimalisasi ==========
 
-Kromosom terbaik : [7, 9, 9, 6, 3, 0, 7, 6, 4, 2]
-Hasil decode     : [[1.3989139891398916, -0.8471584715847158]]
-Fitness terbaik  : [3.0737906343743595]
+Kromosom terbaik : [6, 7, 4, 9, 8, 6, 8, 0, 2, 6]
+Hasil decode     : [[1.0249602496024965, 0.3605336053360533]]
+Fitness terbaik  : [1.6371461632505704]
+
 
 """
 
