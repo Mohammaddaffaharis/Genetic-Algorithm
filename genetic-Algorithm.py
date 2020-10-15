@@ -25,7 +25,8 @@ def encoding(population): #encoding Integer menggunakan 5 gen
 def fitness(phenotype): #fitness function dari setiap individual di dalam populasi
 	fitness = []
 	for x in phenotype:
-		f =  1/(((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))+0.1)
+		#f =  1/(((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))+0.1)
+		f = -((math.cos(x[0])*math.sin(x[1]))-(x[0]/(pow(x[1],2)+1)))
 		fitness.append(f)
 	return fitness
 
@@ -52,8 +53,8 @@ def crossover(papa, mama, pc): #melakukan crossover terhadap kedua parent yang d
 	if (x < pc):
 		stop = random.randint(0,9)
 		for i in range(stop):
-			papa[i],mama[i] = mama[i], papa[i]
-			#mama[i] = papa[i]
+			papa[i] = mama[i]
+			mama[i] = papa[i]
 	return papa,mama
 
 def mutasi(papa, mama, pm): #melakukan mutasi terhadap kedua parent yang didapatkan (jika masuk dalam probabilitas)
@@ -95,17 +96,17 @@ arrHasil.append(hasil)
 
 print('========== Nilai Minimalisasi ==========\n')
 print('Kromosom terbaik :', hasil)
-print('Hasil decode     :', encoding(arrHasil))
+enc = encoding(arrHasil)
+print('Nilai X1         :', enc[0][0])
+print('Nilai X2         :', enc[0][1])
 print('Fitness terbaik  :', fitness(arrHasil))
 
 """
-			 OUTPUT PROGRAM
 ========== Nilai Minimalisasi ==========
 
-Kromosom terbaik : [6, 7, 4, 9, 8, 6, 8, 0, 2, 6]
-Hasil decode     : [[1.0249602496024965, 0.3605336053360533]]
-Fitness terbaik  : [1.6371461632505704]
-
-
+Kromosom terbaik : [2, 1, 6, 2, 5, 8, 1, 5, 0, 2]
+Nilai X1         : -0.3512435124351243
+Nilai X2         : 0.6300563005630058
+Fitness terbaik  : [1.3501754883740147]
 """
 
